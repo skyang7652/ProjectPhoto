@@ -1,0 +1,11 @@
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\bin\Debug\WordTest.exe.config
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.csproj.ResolveComReference.cache
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.Properties.Resources.resources
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.csproj.GenerateResource.Cache
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\bin\Debug\WordTest.exe
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\bin\Debug\WordTest.pdb
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.exe
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.pdb
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.FormInput.resources
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.FormMain.resources
+c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.csprojResolveAssemblyReference.cache
