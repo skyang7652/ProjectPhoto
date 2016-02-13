@@ -17,6 +17,7 @@ namespace WordTest
         public struct data
         {
             public Image imageData;
+            public Image oriImage;
             public string des;
             public string title;
             public string date;
@@ -26,7 +27,7 @@ namespace WordTest
 
         public List<data> dataList = new List<data>();
         private object fileName;
-        
+        private int saveSuccess;
         public FormMain()
         {
             InitializeComponent();
@@ -97,6 +98,7 @@ namespace WordTest
             formInput.zoomImage = dataList[index].imageData;
             formInput.date = dataList[index].date;
             formInput.fileName = dataList[index].filePath;
+            formInput.oriImage = dataList[index].oriImage;
             formInput.index = index;
             formInput.FormClosed += new FormClosedEventHandler(formInput_FormClosed);
             formInput.Show();
@@ -220,14 +222,28 @@ namespace WordTest
         private void bwLoading_Run(Object sender, DoWorkEventArgs e)
         {
             int ret = 0;
+            saveSuccess = 0;
             this.Invoke((MethodInvoker)delegate
             {
-                ret = saveDocx(fileName);
+                try
+                {
+                    ret = saveDocx(fileName);
+                    saveSuccess = 1;
+                }
+                catch
+                {
+                    MessageBox.Show("儲存失敗");
+                }
+               
             });
         }
         private void bwLoading_Completed(Object sender, RunWorkerCompletedEventArgs e)
         {
-            MessageBox.Show("儲存完成");
+            if(saveSuccess == 1)
+            {
+                MessageBox.Show("儲存完成");
+            }
+            
 
             if (cpLoading != null)
             {

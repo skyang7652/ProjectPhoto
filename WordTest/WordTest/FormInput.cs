@@ -26,7 +26,7 @@ namespace WordTest
         private int width = 472;
         private int height = 302;
         public Image zoomImage;
-        private Image oriImage = null;
+        public Image oriImage = null;
         public FormMain.data addData = new FormMain.data();
         private Graphics g;
         private void FormInput_Load(object sender, EventArgs e)
@@ -73,7 +73,7 @@ namespace WordTest
                 pictureBoxView.BackgroundImage = null;
                 zoomImage = null;
                 zoomImage = resizeImage(oriImage);
-                pictureBoxView.BackgroundImage = zoomImage;
+                pictureBoxView.Image = zoomImage;
 
             }
             else
@@ -123,9 +123,8 @@ namespace WordTest
             monthCalendarDate.Visible = false;
             //Image test = null;
             zoomImage = resizeImage(oriImage);
-            zoomImage = inputImageDate(zoomImage);
-            zoomImage.Save(@"temp.jpg");
-            pictureBoxView.BackgroundImage = zoomImage;
+            zoomImage = inputImageDate(zoomImage);          
+            pictureBoxView.Image = zoomImage;
 
         }
 
@@ -137,6 +136,7 @@ namespace WordTest
             Data.des = textBoxDes.Text;
             Data.filePath = labelImageName.Text;
             Data.date = labelDate.Text;
+            Data.oriImage = oriImage;
 
             FormMain formMain = (FormMain)this.Owner;
             if(type == (int)fileClass.type.NEW)
