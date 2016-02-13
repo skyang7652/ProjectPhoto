@@ -9,13 +9,13 @@ namespace WordTest
 {
     class fileClass
     {
-        public struct data
-        {
-            public Image imageData;
-            public string des;
-            public string title;
-        }
 
+
+        public enum type
+        {
+            NEW = 0,
+            EDIT = 1,
+        };
 
 
 

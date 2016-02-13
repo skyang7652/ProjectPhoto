@@ -18,16 +18,34 @@ namespace WordTest
         }
         public double pixelToMm = 0.26458333333333;
         public string branchName;
+        public string des;
         public string fileName;
+        public string date;
+        public int index;
+        public int type;
         private int width = 472;
         private int height = 302;
-        private Image zoomImage;
+        public Image zoomImage;
         private Image oriImage = null;
         public FormMain.data addData = new FormMain.data();
         private Graphics g;
         private void FormInput_Load(object sender, EventArgs e)
-        {
-            labelBranchName.Text = branchName;
+        {            
+            if(type == (int)fileClass.type.NEW)
+            {
+                labelBranchName.Text = branchName;
+            }
+            else
+            {
+                labelBranchName.Text = branchName;
+                textBoxDes.Text = des;
+                pictureBoxView.Image = zoomImage;
+                labelImageName.Text = fileName;
+                labelDate.Text = date;
+            }
+
+
+
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -52,7 +70,8 @@ namespace WordTest
                 int imgheight = oriImage.Height;
 
                 // g.InterpolationMode = InterpolationMode.Bilinear;
-
+                pictureBoxView.BackgroundImage = null;
+                zoomImage = null;
                 zoomImage = resizeImage(oriImage);
                 pictureBoxView.BackgroundImage = zoomImage;
 
@@ -116,10 +135,19 @@ namespace WordTest
             Data.imageData = zoomImage;
             Data.title = labelBranchName.Text;
             Data.des = textBoxDes.Text;
+            Data.filePath = labelImageName.Text;
+            Data.date = labelDate.Text;
 
-            FormMain forMain = null;
-
-            forMain.addList(Data);
+            FormMain formMain = (FormMain)this.Owner;
+            if(type == (int)fileClass.type.NEW)
+            {
+                formMain.addList(Data);
+            }
+            else
+            {
+                formMain.editList(Data, index);
+            }
+            
             this.Close();
 
             

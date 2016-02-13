@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CircularProgress.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CircularProgress.designer.cs">
+      <DependentUpon>CircularProgress.cs</DependentUpon>
+    </Compile>
     <Compile Include="fileClass.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
@@ -61,6 +67,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CircularProgress.resx">
+      <DependentUpon>CircularProgress.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormInput.resx">
       <DependentUpon>FormInput.cs</DependentUpon>
     </EmbeddedResource>
@@ -76,6 +85,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -9,3 +9,14 @@ c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug
 c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.FormInput.resources
 c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.FormMain.resources
 c:\users\fish5\documents\visual studio 2015\Projects\WordTest\WordTest\obj\Debug\WordTest.csprojResolveAssemblyReference.cache
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\bin\Debug\WordTest.exe.config
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\bin\Debug\WordTest.exe
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\bin\Debug\WordTest.pdb
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\WordTest.csproj.ResolveComReference.cache
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\WordTest.CircularProgress.resources
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\WordTest.FormInput.resources
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\WordTest.FormMain.resources
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\WordTest.Properties.Resources.resources
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\WordTest.csproj.GenerateResource.Cache
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\WordTest.exe
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\WordTest.pdb
