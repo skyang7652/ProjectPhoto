@@ -33,15 +33,15 @@ namespace WordTest
         {            
             if(type == (int)fileClass.type.NEW)
             {
-                labelBranchName.Text = branchName;
+                textBoxBranchName.Text = branchName;
             }
             else
             {
-                labelBranchName.Text = branchName;
+                textBoxBranchName.Text = branchName;
                 textBoxDes.Text = des;
                 pictureBoxView.Image = zoomImage;
                 labelImageName.Text = fileName;
-                labelDate.Text = date;
+                textBoxDate.Text = date;
             }
 
 
@@ -85,7 +85,7 @@ namespace WordTest
         private Image inputImageDate(Image img)
         {
             Image result = img;
-            string text = labelDate.Text;
+            string text = textBoxDate.Text;
             int fontSize = 16;
 
             int x = img.Width - 50;
@@ -112,14 +112,20 @@ namespace WordTest
 
         private void buttonDate_Click(object sender, EventArgs e)
         {
+            if(oriImage == null)
+            {
+                MessageBox.Show("請先選擇圖片");
+                return;
+            }
             monthCalendarDate.Visible = true;
+            monthCalendarDate.BringToFront();
             monthCalendarDate.Location = buttonDate.Location;
             monthCalendarDate.DateSelected += new DateRangeEventHandler(monthCalendar_DateSelected);
         }
 
         private void monthCalendar_DateSelected(object sender, DateRangeEventArgs e)
         {
-            labelDate.Text = e.Start.ToShortDateString();
+            textBoxDate.Text = e.Start.ToShortDateString();
             monthCalendarDate.Visible = false;
             //Image test = null;
             zoomImage = resizeImage(oriImage);
@@ -132,23 +138,33 @@ namespace WordTest
         {
             FormMain.data Data = new FormMain.data();
             Data.imageData = zoomImage;
-            Data.title = labelBranchName.Text;
+            Data.title = textBoxBranchName.Text;
             Data.des = textBoxDes.Text;
             Data.filePath = labelImageName.Text;
-            Data.date = labelDate.Text;
+            Data.date = textBoxDate.Text;
             Data.oriImage = oriImage;
 
             FormMain formMain = (FormMain)this.Owner;
-            if(type == (int)fileClass.type.NEW)
+            switch (type)
             {
-                formMain.addList(Data);
+                case (int)fileClass.type.NEW:
+                    {
+                        formMain.addList(Data);
+                        break;
+                    }
+                case (int)fileClass.type.EDIT:
+                    {
+                        formMain.editList(Data, index);
+                        break;
+                    }
+                case (int)fileClass.type.INSERT:
+                    {
+                        formMain.insertList(Data, index);
+                        break;
+                    }
             }
-            else
-            {
-                formMain.editList(Data, index);
-            }
-            
-            this.Close();
+
+          this.Close();
 
             
 

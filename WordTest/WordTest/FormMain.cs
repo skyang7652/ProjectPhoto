@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using word = Microsoft.Office.Interop.Word;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace WordTest
 {
@@ -28,14 +31,18 @@ namespace WordTest
         public List<data> dataList = new List<data>();
         private object fileName;
         private int saveSuccess;
+        private CircularProgress cpLoading;
+        private int dataGridViewIndex = 0;
+
         public FormMain()
         {
-            InitializeComponent();
+
+            InitializeComponent();         
         }
-        private CircularProgress cpLoading;
+       
+
         private void FormMain_Load(object sender, EventArgs e)
         {
-            
 
         }
 
@@ -78,8 +85,15 @@ namespace WordTest
             dataList[index] = d;
         }
 
+        public void insertList(data d,int index)
+        {
+            dataList.Insert(index, d);
+        }
+
         private void dataGridViewShow_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            return;
+
             int index = e.RowIndex;
             if(dataList.Count == 0)
             {
@@ -106,36 +120,7 @@ namespace WordTest
            
         }
 
-        private void buttonSave_Click(object sender, EventArgs e)
-        {
-            if (dataList.Count == 0)
-            {
-                MessageBox.Show("無資料儲存");
-                return;
-            }
 
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter = "Doc|*.doc";
-            dlg.Title = "Save an Image File";
-            // If the file name is not an empty string open it for saving.
-            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK && dlg.FileName != "")
-            {
-                fileName = dlg.FileName;
-                cpLoading = new CircularProgress();
-                cpLoading.Dock = DockStyle.Fill;
-                this.Controls.Add(cpLoading);
-                cpLoading.BringToFront();
-                cpLoading.Start();
-
-                BackgroundWorker bwLoading = new BackgroundWorker();
-                bwLoading.WorkerSupportsCancellation = true;
-                bwLoading.DoWork += new DoWorkEventHandler(bwLoading_Run);
-                bwLoading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bwLoading_Completed);
-                bwLoading.RunWorkerAsync();
-
-            }
-            
-        }
 
         private int saveDocx(object filePath)
         {
@@ -255,9 +240,180 @@ namespace WordTest
 
         private void buttonClear_Click(object sender, EventArgs e)
         {
-            dataList.Clear();
-            dataGridViewShow.Rows.Clear();
-            textBoxBranchName.Text = "";
+            DialogResult myDialog = MessageBox.Show("是否清除資料???", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if(myDialog == DialogResult.Yes)
+            {
+                dataList.Clear();
+                dataGridViewShow.Rows.Clear();
+                textBoxBranchName.Text = "";
+            }
+            else
+            {
+
+            }
+
+        }
+
+        private void dataGridViewShow_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                dataGridViewIndex = e.RowIndex;
+                for(int i = 0; i < dataGridViewShow.RowCount; i++)
+                {
+                    if(i == dataGridViewIndex)
+                    {
+                        dataGridViewShow.Rows[i].Selected = true;
+                    }
+                    else
+                    {
+                        dataGridViewShow.Rows[i].Selected = false;
+                    }
+                   
+                }
+               
+            }
+        }
+
+        private void toolStripMenuItemEdit_Click(object sender, EventArgs e)
+        {
+            if (dataList.Count == 0)
+            {
+                return;
+            }
+            if (dataGridViewIndex < 0)
+            {
+                return;
+            }
+            formInput = new FormInput();
+            formInput.Owner = this;
+            formInput.MdiParent = this.MdiParent;
+            formInput.type = (int)fileClass.type.EDIT;
+            formInput.branchName = dataList[dataGridViewIndex].title;
+            formInput.des = dataList[dataGridViewIndex].des;
+            formInput.zoomImage = dataList[dataGridViewIndex].imageData;
+            formInput.date = dataList[dataGridViewIndex].date;
+            formInput.fileName = dataList[dataGridViewIndex].filePath;
+            formInput.oriImage = dataList[dataGridViewIndex].oriImage;
+            formInput.index = dataGridViewIndex;
+            formInput.FormClosed += new FormClosedEventHandler(formInput_FormClosed);
+            formInput.Show();
+        }
+
+        private void toolStripMenuItemDelete_Click(object sender, EventArgs e)
+        {
+            if(dataGridViewIndex < 0)
+            {
+                return;
+            }
+
+            if (MessageBox.Show("是否刪除", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question)==DialogResult.Yes){
+                List<data> tempList = new List<data>();
+
+               for(int i = 0; i< dataList.Count; i++)
+                {
+                    if(i != dataGridViewIndex)
+                    {
+                        tempList.Add(dataList[i]);
+                    }
+                }
+                dataList = tempList;
+
+                dataGridViewShow.Rows.Clear();
+                foreach (data i in dataList)
+                {
+                    dataGridViewShow.Rows.Add(i.title, i.des, i.imageData);
+
+                }
+
+            }
+
+        }
+
+        private void toolStripMenuItemInsert_Click(object sender, EventArgs e)
+        {
+            formInput = new FormInput();
+            formInput.Owner = this;
+            formInput.MdiParent = this.MdiParent;
+            formInput.type = (int)fileClass.type.INSERT;
+            formInput.branchName = textBoxBranchName.Text;           
+            formInput.index = dataGridViewIndex;
+            formInput.FormClosed += new FormClosedEventHandler(formInput_FormClosed);
+            formInput.Show();
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            if (dataList.Count == 0)
+            {
+                MessageBox.Show("無資料儲存");
+                return;
+            }
+
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "Doc|*.doc";
+            dlg.Title = "Save an Image File";
+            // If the file name is not an empty string open it for saving.
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK && dlg.FileName != "")
+            {
+                fileName = dlg.FileName;
+                cpLoading = new CircularProgress();
+                cpLoading.Dock = DockStyle.Fill;
+                this.Controls.Add(cpLoading);
+                cpLoading.BringToFront();
+                cpLoading.Start();
+
+                BackgroundWorker bwLoading = new BackgroundWorker();
+                bwLoading.WorkerSupportsCancellation = true;
+                bwLoading.DoWork += new DoWorkEventHandler(bwLoading_Run);
+                bwLoading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bwLoading_Completed);
+                bwLoading.RunWorkerAsync();
+
+            }
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            if (dataList.Count == 0)
+            {
+                MessageBox.Show("無資料儲存");
+                return;
+            }
+
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "Bin|*.bin";
+            dlg.Title = "Save an Image File";
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK && dlg.FileName != "")
+            {
+             
+            }
+        }
+
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog opd = new OpenFileDialog();
+            opd.Title = "Open Image File";
+            opd.Filter = "Bin|*.bin";
+
+            if (opd.ShowDialog() == System.Windows.Forms.DialogResult.OK && opd.FileName != null)
+            {
+                using (Stream stream = File.Open(opd.FileName, FileMode.Open))
+                {
+                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                    dataList= (List<data>)bformatter.Deserialize(stream);
+                }
+                if (dataList.Count == 0)
+                {
+                    return;
+                }
+                dataGridViewShow.Rows.Clear();
+                foreach (data i in dataList)
+                {
+                    dataGridViewShow.Rows.Add(i.title, i.des, i.imageData);
+
+                }
+            }
         }
     }
     }

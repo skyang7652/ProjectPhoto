@@ -15,6 +15,8 @@ namespace WordTest
         {
             NEW = 0,
             EDIT = 1,
+            INSERT = 2,
+            DELETE = 3,
         };
 
 

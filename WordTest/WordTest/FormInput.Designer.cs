@@ -30,14 +30,15 @@
         {
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.labelBranchName = new System.Windows.Forms.Label();
             this.buttonChange = new System.Windows.Forms.Button();
             this.labelImageName = new System.Windows.Forms.Label();
             this.textBoxDes = new System.Windows.Forms.TextBox();
             this.pictureBoxView = new System.Windows.Forms.PictureBox();
             this.buttonDate = new System.Windows.Forms.Button();
-            this.labelDate = new System.Windows.Forms.Label();
             this.monthCalendarDate = new System.Windows.Forms.MonthCalendar();
+            this.textBoxBranchName = new System.Windows.Forms.TextBox();
+            this.textBoxDate = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,16 +63,6 @@
             this.buttonCancel.Text = "取消";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
-            // 
-            // labelBranchName
-            // 
-            this.labelBranchName.AutoSize = true;
-            this.labelBranchName.Font = new System.Drawing.Font("DFKai-SB", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelBranchName.Location = new System.Drawing.Point(62, 38);
-            this.labelBranchName.Name = "labelBranchName";
-            this.labelBranchName.Size = new System.Drawing.Size(36, 24);
-            this.labelBranchName.TabIndex = 2;
-            this.labelBranchName.Text = "--";
             // 
             // buttonChange
             // 
@@ -123,16 +114,6 @@
             this.buttonDate.UseVisualStyleBackColor = true;
             this.buttonDate.Click += new System.EventHandler(this.buttonDate_Click);
             // 
-            // labelDate
-            // 
-            this.labelDate.AutoSize = true;
-            this.labelDate.Font = new System.Drawing.Font("DFKai-SB", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelDate.Location = new System.Drawing.Point(198, 166);
-            this.labelDate.Name = "labelDate";
-            this.labelDate.Size = new System.Drawing.Size(36, 24);
-            this.labelDate.TabIndex = 9;
-            this.labelDate.Text = "--";
-            // 
             // monthCalendarDate
             // 
             this.monthCalendarDate.Location = new System.Drawing.Point(636, 308);
@@ -140,19 +121,46 @@
             this.monthCalendarDate.TabIndex = 10;
             this.monthCalendarDate.Visible = false;
             // 
+            // textBoxBranchName
+            // 
+            this.textBoxBranchName.Font = new System.Drawing.Font("PMingLiU", 14F);
+            this.textBoxBranchName.Location = new System.Drawing.Point(135, 35);
+            this.textBoxBranchName.Name = "textBoxBranchName";
+            this.textBoxBranchName.Size = new System.Drawing.Size(470, 35);
+            this.textBoxBranchName.TabIndex = 11;
+            // 
+            // textBoxDate
+            // 
+            this.textBoxDate.Font = new System.Drawing.Font("PMingLiU", 14F);
+            this.textBoxDate.Location = new System.Drawing.Point(202, 154);
+            this.textBoxDate.Name = "textBoxDate";
+            this.textBoxDate.Size = new System.Drawing.Size(166, 35);
+            this.textBoxDate.TabIndex = 12;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("DFKai-SB", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Location = new System.Drawing.Point(26, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(86, 24);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "支線 :";
+            // 
             // FormInput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(927, 589);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBoxDate);
+            this.Controls.Add(this.textBoxBranchName);
             this.Controls.Add(this.monthCalendarDate);
-            this.Controls.Add(this.labelDate);
             this.Controls.Add(this.buttonDate);
             this.Controls.Add(this.pictureBoxView);
             this.Controls.Add(this.textBoxDes);
             this.Controls.Add(this.labelImageName);
             this.Controls.Add(this.buttonChange);
-            this.Controls.Add(this.labelBranchName);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonApply);
             this.Name = "FormInput";
@@ -168,13 +176,14 @@
 
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.Button buttonCancel;
-        private System.Windows.Forms.Label labelBranchName;
         private System.Windows.Forms.Button buttonChange;
         private System.Windows.Forms.Label labelImageName;
         private System.Windows.Forms.TextBox textBoxDes;
         private System.Windows.Forms.PictureBox pictureBoxView;
         private System.Windows.Forms.Button buttonDate;
-        private System.Windows.Forms.Label labelDate;
         private System.Windows.Forms.MonthCalendar monthCalendarDate;
+        private System.Windows.Forms.TextBox textBoxBranchName;
+        private System.Windows.Forms.TextBox textBoxDate;
+        private System.Windows.Forms.Label label1;
     }
 }
