@@ -20,3 +20,4 @@ C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\bin\Debug\App.exe
 C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\bin\Debug\App.pdb
 C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\App.exe
 C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\App.pdb
+C:\Users\fish5\Documents\GitHub\ProjectPhoto\WordTest\WordTest\obj\Debug\WordTest.csprojResolveAssemblyReference.cache

@@ -11,12 +11,14 @@ using word = Microsoft.Office.Interop.Word;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Drawing.Imaging;
 
 namespace WordTest
 {
     public partial class FormMain : Form
     {
         public double pixelToMm =0.353;
+        [Serializable]
         public struct data
         {
             public Image imageData;
@@ -26,12 +28,26 @@ namespace WordTest
             public string date;
             public string filePath;
         }
+        [Serializable]
+        private struct saveData
+        {
+            public byte[] imageData;
+            public byte[] oriImage;
+            public string des;
+            public string title;
+            public string date;
+            public string filePath;
+
+        }
         public FormInput formInput = null;
 
         public List<data> dataList = new List<data>();
+      
+        private List<saveData> saveDataList = new List<saveData>();
         private object fileName;
         private int saveSuccess;
         private CircularProgress cpLoading;
+        private CircularProgress cpSave;
         private int dataGridViewIndex = 0;
 
         public FormMain()
@@ -39,7 +55,6 @@ namespace WordTest
 
             InitializeComponent();         
         }
-       
 
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -119,8 +134,6 @@ namespace WordTest
 
            
         }
-
-
 
         private int saveDocx(object filePath)
         {
@@ -222,6 +235,7 @@ namespace WordTest
                
             });
         }
+
         private void bwLoading_Completed(Object sender, RunWorkerCompletedEventArgs e)
         {
             if(saveSuccess == 1)
@@ -381,19 +395,76 @@ namespace WordTest
             }
 
             SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter = "Bin|*.bin";
+            dlg.Filter = "sav|*.sav";
             dlg.Title = "Save an Image File";
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK && dlg.FileName != "")
             {
-             
+
+                fileName = dlg.FileName;
+                cpSave = new CircularProgress();
+                cpSave.Dock = DockStyle.Fill;
+                this.Controls.Add(cpSave);
+                cpSave.BringToFront();
+                cpSave.Start();
+
+                BackgroundWorker bwLoading = new BackgroundWorker();
+                bwLoading.WorkerSupportsCancellation = true;
+                bwLoading.DoWork += new DoWorkEventHandler(bwSave_Run);
+                bwLoading.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bwSave_Completed);
+                bwLoading.RunWorkerAsync();
+
             }
         }
+
+        private void bwSave_Run(Object sender, DoWorkEventArgs e)
+        {        
+            saveSuccess = 0;
+            this.Invoke((MethodInvoker)delegate
+            {
+                try
+                {
+                    using (Stream stream = File.Open((string)fileName, FileMode.Create))
+                    {
+                        var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+
+                        bformatter.Serialize(stream, dataList);
+                    }
+                    saveSuccess = 1;
+                }
+                catch
+                {
+                    MessageBox.Show("儲存失敗");
+                }
+
+            });
+        }
+
+        private void bwSave_Completed(Object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (saveSuccess == 1)
+            {
+                MessageBox.Show("儲存完成");
+            }
+
+
+            if (cpSave != null)
+            {
+                cpSave.Stop();
+                this.Controls.Remove(cpSave);
+                cpSave = null;
+            }
+        }
+
+
+
+
 
         private void buttonLoad_Click(object sender, EventArgs e)
         {
             OpenFileDialog opd = new OpenFileDialog();
             opd.Title = "Open Image File";
-            opd.Filter = "Bin|*.bin";
+            opd.Filter = "sav|*.sav";
 
             if (opd.ShowDialog() == System.Windows.Forms.DialogResult.OK && opd.FileName != null)
             {
@@ -403,6 +474,9 @@ namespace WordTest
 
                     dataList= (List<data>)bformatter.Deserialize(stream);
                 }
+
+               // dataList = changeToData(saveDataList);
+
                 if (dataList.Count == 0)
                 {
                     return;
@@ -415,6 +489,106 @@ namespace WordTest
                 }
             }
         }
+
+        private List<saveData> changeToSaveData(List<data> dataList)
+        {
+            List<saveData> tempData = new List<saveData>();
+            foreach(data i in dataList)
+            {
+
+                saveData temp = new saveData();
+
+                temp.imageData = ImageToBuffer(i.imageData, ImageFormat.Jpeg);
+                temp.oriImage = ImageToBuffer(i.oriImage, ImageFormat.Jpeg);
+                temp.title = i.title;
+                temp.des = i.des;
+                temp.filePath = i.filePath;
+                temp.date = i.date;
+                tempData.Add(temp);
+            }
+
+
+            return tempData;
+        }
+
+
+        private List<data> changeToData(List<saveData> saveDataList)
+        {
+            List<data> tempData = new List<data>();
+            foreach (saveData i in saveDataList)
+            {
+
+                data temp = new data();
+
+                temp.imageData = BufferToImage(i.imageData);
+                temp.oriImage = BufferToImage(i.oriImage);
+                temp.title = i.title;
+                temp.des = i.des;
+                temp.filePath = i.filePath;
+                temp.date = i.date;
+                tempData.Add(temp);
+            }
+
+
+            return tempData;
+        }
+
+
+
+        public static byte[] ImageToBuffer(Image Image, System.Drawing.Imaging.ImageFormat imageFormat)
+        {
+            if (Image == null) { return null; }
+            byte[] data = null;
+            using (MemoryStream oMemoryStream = new MemoryStream())
+            {
+                //建立副本
+                using (Bitmap oBitmap = new Bitmap(Image))
+                {
+                    //儲存圖片到 MemoryStream 物件，並且指定儲存影像之格式
+                    oBitmap.Save(oMemoryStream, imageFormat);
+                    //設定資料流位置
+                    oMemoryStream.Position = 0;
+                    //設定 buffer 長度
+                    data = new byte[oMemoryStream.Length];
+                    //將資料寫入 buffer
+                    oMemoryStream.Read(data, 0, Convert.ToInt32(oMemoryStream.Length));
+                    //將所有緩衝區的資料寫入資料流
+                    oMemoryStream.Flush();
+                }
+            }
+            return data;
+        }
+
+
+        /// 將 Byte 陣列轉換為 Image。
+        /// </summary>
+        /// <param name="Buffer">Byte 陣列。</param>        
+        public static Image BufferToImage(byte[] Buffer)
+        {
+            if (Buffer == null || Buffer.Length == 0) { return null; }
+            byte[] data = null;
+            Image oImage = null;
+            Bitmap oBitmap = null;
+            //建立副本
+            data = (byte[])Buffer.Clone();
+            try
+            {
+                MemoryStream oMemoryStream = new MemoryStream(Buffer);
+                //設定資料流位置
+                oMemoryStream.Position = 0;
+                oImage = System.Drawing.Image.FromStream(oMemoryStream);
+                //建立副本
+                oBitmap = new Bitmap(oImage);
+            }
+            catch
+            {
+                throw;
+            }
+            //return oImage;
+            return oBitmap;
+        }
+
+
     }
     }
 

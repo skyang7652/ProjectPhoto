@@ -88,7 +88,7 @@ namespace WordTest
             string text = textBoxDate.Text;
             int fontSize = 16;
 
-            int x = img.Width - 50;
+            int x = img.Width - 60;
             int y = img.Height - 30;
             StringFormat drawFormat = new StringFormat();
             drawFormat.Alignment = StringAlignment.Center;
@@ -168,6 +168,16 @@ namespace WordTest
 
             
 
+        }
+
+        private void textBoxDate_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {              
+                zoomImage = resizeImage(oriImage);
+                zoomImage = inputImageDate(zoomImage);
+                pictureBoxView.Image = zoomImage;
+            }
         }
     }
 }
