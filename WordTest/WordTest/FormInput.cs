@@ -104,6 +104,9 @@ namespace WordTest
             Image resultImg = new Bitmap(width, height);
 
             g = Graphics.FromImage(resultImg);
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             g.DrawImage(img, 0, 0, width, height);
             g.Dispose();
 
@@ -178,6 +181,15 @@ namespace WordTest
                 zoomImage = inputImageDate(zoomImage);
                 pictureBoxView.Image = zoomImage;
             }
+        }
+
+        private void textBoxDate_TextChanged(object sender, EventArgs e)
+        {
+
+                zoomImage = resizeImage(oriImage);
+                zoomImage = inputImageDate(zoomImage);
+                pictureBoxView.Image = zoomImage;
+
         }
     }
 }

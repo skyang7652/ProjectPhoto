@@ -47,7 +47,7 @@
             // 
             this.buttonApply.Font = new System.Drawing.Font("DFKai-SB", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.buttonApply.Location = new System.Drawing.Point(606, 37);
-            this.buttonApply.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonApply.Margin = new System.Windows.Forms.Padding(2);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(78, 38);
             this.buttonApply.TabIndex = 0;
@@ -59,7 +59,7 @@
             // 
             this.buttonCancel.Font = new System.Drawing.Font("DFKai-SB", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.buttonCancel.Location = new System.Drawing.Point(688, 37);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(78, 38);
             this.buttonCancel.TabIndex = 1;
@@ -71,7 +71,7 @@
             // 
             this.buttonChange.Font = new System.Drawing.Font("DFKai-SB", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.buttonChange.Location = new System.Drawing.Point(133, 110);
-            this.buttonChange.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonChange.Margin = new System.Windows.Forms.Padding(2);
             this.buttonChange.Name = "buttonChange";
             this.buttonChange.Size = new System.Drawing.Size(74, 38);
             this.buttonChange.TabIndex = 3;
@@ -94,7 +94,7 @@
             // 
             this.textBoxDes.Font = new System.Drawing.Font("PMingLiU", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.textBoxDes.Location = new System.Drawing.Point(217, 484);
-            this.textBoxDes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxDes.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxDes.Multiline = true;
             this.textBoxDes.Name = "textBoxDes";
             this.textBoxDes.Size = new System.Drawing.Size(407, 54);
@@ -104,7 +104,7 @@
             // 
             this.buttonDate.Font = new System.Drawing.Font("DFKai-SB", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.buttonDate.Location = new System.Drawing.Point(133, 152);
-            this.buttonDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonDate.Margin = new System.Windows.Forms.Padding(2);
             this.buttonDate.Name = "buttonDate";
             this.buttonDate.Size = new System.Drawing.Size(74, 38);
             this.buttonDate.TabIndex = 7;
@@ -115,7 +115,7 @@
             // monthCalendarDate
             // 
             this.monthCalendarDate.Location = new System.Drawing.Point(663, 283);
-            this.monthCalendarDate.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.monthCalendarDate.Margin = new System.Windows.Forms.Padding(7);
             this.monthCalendarDate.Name = "monthCalendarDate";
             this.monthCalendarDate.TabIndex = 10;
             this.monthCalendarDate.Visible = false;
@@ -124,7 +124,7 @@
             // 
             this.textBoxBranchName.Font = new System.Drawing.Font("PMingLiU", 14F);
             this.textBoxBranchName.Location = new System.Drawing.Point(217, 45);
-            this.textBoxBranchName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxBranchName.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxBranchName.Name = "textBoxBranchName";
             this.textBoxBranchName.Size = new System.Drawing.Size(354, 30);
             this.textBoxBranchName.TabIndex = 11;
@@ -133,10 +133,11 @@
             // 
             this.textBoxDate.Font = new System.Drawing.Font("PMingLiU", 14F);
             this.textBoxDate.Location = new System.Drawing.Point(224, 160);
-            this.textBoxDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxDate.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxDate.Name = "textBoxDate";
             this.textBoxDate.Size = new System.Drawing.Size(126, 30);
             this.textBoxDate.TabIndex = 12;
+            this.textBoxDate.TextChanged += new System.EventHandler(this.textBoxDate_TextChanged);
             this.textBoxDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxDate_KeyDown);
             // 
             // label1
@@ -188,7 +189,7 @@
             this.Controls.Add(this.buttonChange);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonApply);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormInput";
             this.Text = "FormInput";
             this.Load += new System.EventHandler(this.FormInput_Load);

@@ -17,7 +17,7 @@ namespace WordTest
 {
     public partial class FormMain : Form
     {
-        public double pixelToMm =0.353;
+        public double pixelToMm = 0.353;
         [Serializable]
         public struct data
         {
@@ -27,6 +27,8 @@ namespace WordTest
             public string title;
             public string date;
             public string filePath;
+            public bool dataIsEmpty;
+
         }
         [Serializable]
         private struct saveData
@@ -42,7 +44,7 @@ namespace WordTest
         public FormInput formInput = null;
 
         public List<data> dataList = new List<data>();
-      
+
         private List<saveData> saveDataList = new List<saveData>();
         private object fileName;
         private int saveSuccess;
@@ -53,7 +55,7 @@ namespace WordTest
         public FormMain()
         {
 
-            InitializeComponent();         
+            InitializeComponent();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -63,7 +65,7 @@ namespace WordTest
 
         private void buttonNew_Click(object sender, EventArgs e)
         {
-            if(textBoxBranchName.Text == "")
+            if (textBoxBranchName.Text == "")
             {
                 MessageBox.Show("請輸入名稱");
                 return;
@@ -79,29 +81,24 @@ namespace WordTest
 
         private void formInput_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if(dataList.Count == 0)
-            {
-                return;
-            }
-            dataGridViewShow.Rows.Clear();
-            foreach (data i in dataList)
-            {                
-                dataGridViewShow.Rows.Add(i.title, i.des,i.imageData);
 
-            }
+            updateGridView();
         }
 
         public void addList(data d)
         {
+            d.dataIsEmpty = false;
             dataList.Add(d);
         }
         public void editList(data d, int index)
         {
+            d.dataIsEmpty = false;
             dataList[index] = d;
         }
 
-        public void insertList(data d,int index)
+        public void insertList(data d, int index)
         {
+            d.dataIsEmpty = false;
             dataList.Insert(index, d);
         }
 
@@ -110,11 +107,11 @@ namespace WordTest
             return;
 
             int index = e.RowIndex;
-            if(dataList.Count == 0)
+            if (dataList.Count == 0)
             {
                 return;
             }
-            if(index < 0)
+            if (index < 0)
             {
                 return;
             }
@@ -132,7 +129,7 @@ namespace WordTest
             formInput.FormClosed += new FormClosedEventHandler(formInput_FormClosed);
             formInput.Show();
 
-           
+
         }
 
         private int saveDocx(object filePath)
@@ -189,10 +186,20 @@ namespace WordTest
                 //設定表格內直書
                 myTable.Cell(i + 1, 2).Range.Orientation = word.WdTextOrientation.wdTextOrientationVerticalFarEast;
                 myTable.Cell(i + 1, 3).Range.Orientation = word.WdTextOrientation.wdTextOrientationVerticalFarEast;
+                if (dataList[i].dataIsEmpty == true)
+                {
+                    continue;
+                }
+
                 //填入表格內文字
                 myTable.Cell(i + 1, 2).Range.Text = dataList[i].des;
                 myTable.Cell(i + 1, 3).Range.Text = dataList[i].title;
                 //剪貼簿複製圖片過去
+
+                if (dataList[i].imageData == null)
+                {
+                    continue;
+                }
                 Microsoft.Office.Interop.Word.Range a = myDoc.Bookmarks.get_Item(ref oEndOfDoc).Range;
                 Clipboard.SetImage(dataList[i].imageData);
                 myTable.Cell(i + 1, 1).Range.InsertParagraphAfter();
@@ -232,17 +239,17 @@ namespace WordTest
                 {
                     MessageBox.Show("儲存失敗");
                 }
-               
+
             });
         }
 
         private void bwLoading_Completed(Object sender, RunWorkerCompletedEventArgs e)
         {
-            if(saveSuccess == 1)
+            if (saveSuccess == 1)
             {
                 MessageBox.Show("儲存完成");
             }
-            
+
 
             if (cpLoading != null)
             {
@@ -255,7 +262,7 @@ namespace WordTest
         private void buttonClear_Click(object sender, EventArgs e)
         {
             DialogResult myDialog = MessageBox.Show("是否清除資料???", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if(myDialog == DialogResult.Yes)
+            if (myDialog == DialogResult.Yes)
             {
                 dataList.Clear();
                 dataGridViewShow.Rows.Clear();
@@ -270,12 +277,12 @@ namespace WordTest
 
         private void dataGridViewShow_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right)
             {
                 dataGridViewIndex = e.RowIndex;
-                for(int i = 0; i < dataGridViewShow.RowCount; i++)
+                for (int i = 0; i < dataGridViewShow.RowCount; i++)
                 {
-                    if(i == dataGridViewIndex)
+                    if (i == dataGridViewIndex)
                     {
                         dataGridViewShow.Rows[i].Selected = true;
                     }
@@ -283,9 +290,9 @@ namespace WordTest
                     {
                         dataGridViewShow.Rows[i].Selected = false;
                     }
-                   
+
                 }
-               
+
             }
         }
 
@@ -316,29 +323,25 @@ namespace WordTest
 
         private void toolStripMenuItemDelete_Click(object sender, EventArgs e)
         {
-            if(dataGridViewIndex < 0)
+            if (dataGridViewIndex < 0)
             {
                 return;
             }
 
-            if (MessageBox.Show("是否刪除", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question)==DialogResult.Yes){
+            if (MessageBox.Show("是否刪除", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
                 List<data> tempList = new List<data>();
 
-               for(int i = 0; i< dataList.Count; i++)
+                for (int i = 0; i < dataList.Count; i++)
                 {
-                    if(i != dataGridViewIndex)
+                    if (i != dataGridViewIndex)
                     {
                         tempList.Add(dataList[i]);
                     }
                 }
                 dataList = tempList;
 
-                dataGridViewShow.Rows.Clear();
-                foreach (data i in dataList)
-                {
-                    dataGridViewShow.Rows.Add(i.title, i.des, i.imageData);
-
-                }
+                updateGridView();
 
             }
 
@@ -350,7 +353,7 @@ namespace WordTest
             formInput.Owner = this;
             formInput.MdiParent = this.MdiParent;
             formInput.type = (int)fileClass.type.INSERT;
-            formInput.branchName = textBoxBranchName.Text;           
+            formInput.branchName = textBoxBranchName.Text;
             formInput.index = dataGridViewIndex;
             formInput.FormClosed += new FormClosedEventHandler(formInput_FormClosed);
             formInput.Show();
@@ -417,7 +420,7 @@ namespace WordTest
         }
 
         private void bwSave_Run(Object sender, DoWorkEventArgs e)
-        {        
+        {
             saveSuccess = 0;
             this.Invoke((MethodInvoker)delegate
             {
@@ -472,10 +475,10 @@ namespace WordTest
                 {
                     var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
-                    dataList= (List<data>)bformatter.Deserialize(stream);
+                    dataList = (List<data>)bformatter.Deserialize(stream);
                 }
 
-               // dataList = changeToData(saveDataList);
+                // dataList = changeToData(saveDataList);
 
                 if (dataList.Count == 0)
                 {
@@ -493,7 +496,7 @@ namespace WordTest
         private List<saveData> changeToSaveData(List<data> dataList)
         {
             List<saveData> tempData = new List<saveData>();
-            foreach(data i in dataList)
+            foreach (data i in dataList)
             {
 
                 saveData temp = new saveData();
@@ -588,7 +591,47 @@ namespace WordTest
             return oBitmap;
         }
 
+        private void ToolStripMenuItemNull_Click(object sender, EventArgs e)
+        {
+            data d = new data();
 
+            d.dataIsEmpty = true;
+            dataList.Add(d);
+            updateGridView();
+
+        }
+
+        private void updateGridView()
+        {
+            if (dataList.Count == 0)
+            {
+                return;
+            }
+            dataGridViewShow.Rows.Clear();
+            int count = 0;
+            bool change = true;
+            Color color = Color.Red;
+            foreach (data i in dataList)
+            {
+                if (count % 3 == 0)
+                {
+                    if (change == true)
+                    {
+                        color = Color.LightBlue;
+                        change = false;
+                    }
+                    else
+                    {
+                        color = Color.LightCoral;
+                        change = true;
+                    }
+
+                }
+                dataGridViewShow.Rows.Add(i.title, i.des, i.imageData);
+                dataGridViewShow.Rows[count].DefaultCellStyle.BackColor = color;
+                count++;
+            }
+        }
     }
-    }
+}
 
